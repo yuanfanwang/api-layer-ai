@@ -5,14 +5,20 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/recommend', methods=['GET'])
-def get_recommendations():
-    ai_service_url = 'http://ai:5004/recommend'
-    response = requests.get(ai_service_url)
-    recommendations = response.json()
-    return jsonify(recommendations)
 
-@app.route('/update_model', methods=['POST'])
+@app.route('/api/recommend_products', methods=['POST'])
+def recommend_products():
+    data = request.get_json()
+    user_id = data['user_id']
+
+    # AIサービスにリクエストを送信
+    ai_response = requests.post('http://ai:5005/recommend', json={'user_id': user_id})
+    recommended_products = ai_response.json()
+
+    return jsonify(recommended_products), 200
+
+
+@app.route('/api/update_model', methods=['POST'])
 def update_model():
     data = request.get_json()
     try:
