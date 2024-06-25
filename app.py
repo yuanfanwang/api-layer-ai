@@ -12,7 +12,7 @@ def recommend_products():
     user_id = data['user_id']
 
     # AIサービスにリクエストを送信
-    ai_response = requests.post('http://ai:5005/recommend', json={'user_id': user_id})
+    ai_response = requests.post('http://ai-domain:5005/recommend', json={'user_id': user_id})
     recommended_products = ai_response.json()
 
     return jsonify(recommended_products), 200
@@ -22,7 +22,7 @@ def recommend_products():
 def update_model():
     data = request.get_json()
     try:
-        response = requests.post('http://ai:5005/update_model', json=data)
+        response = requests.post('http://ai-domain:5005/update_model', json=data)
         response_data = response.json()
         message = response_data.get('message', 'Update failed')
     except requests.exceptions.RequestException as e:
